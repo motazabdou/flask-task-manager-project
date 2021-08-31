@@ -1,7 +1,6 @@
 {% extends "base.html" %}
 {% block content %}
 
-    <h2>I am extending the base.html page and i'm located in the tasks</h2>
     {% for task in tasks %}
         {{ task.task_name}}<br>
         {{ task.category_name}}<br>
@@ -9,4 +8,5 @@
         {{ task.due_date }}<br>
         {{ task.is_urgent }}<br>
     {% endfor %}
+
 {% endblock %}
