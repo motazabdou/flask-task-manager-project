@@ -15,3 +15,7 @@ nav .brand-logo {
 nav ul {
     padding-right: 20px;
 }
+
+.switch label .lever {
+    margin: 15px 15px 0 15px;
+}
