@@ -12,6 +12,6 @@ nav .brand-logo {
     padding-left: 20px;
 }
 
-ul:not(.browser-default) {
+nav ul {
     padding-right: 20px;
 }
