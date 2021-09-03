@@ -25,6 +25,14 @@ def get_tasks():
     return render_template("tasks.html", tasks=tasks)
 
 
+
+@app.route("/search", methods=["GET", "POST"])
+def search():
+    query = request.form.get("query")
+    tasks = list(mongo.db.tasks.find({"$text": {"$search": query}}))
+    return render_template("tasks.html", tasks=tasks)
+
+
 @app.route("/register", methods=["GET", "POST"])
 def register():
     if request.method == "POST":
@@ -53,6 +61,7 @@ def register():
     return render_template("register.html")
 
 
+
 @app.route("/login", methods=["GET", "POST"])
 def login():
     if request.method == "POST":
@@ -78,6 +87,7 @@ def login():
     return render_template("login.html")
 
 
+
 @app.route("/profile/<username>", methods=["GET", "POST"])
 def profile(username):
     # grab the session user's username from the database
@@ -89,12 +99,14 @@ def profile(username):
     return redirect(url_for("login"))
 
 
+
 @app.route("/logout")
 def logout():
     #remove user from session cookies
     flash("You have been logged out")
     session.pop("user")
     return redirect(url_for("login"))
+
 
 
 @app.route("/add_task", methods=["GET", "POST"])
@@ -116,6 +128,7 @@ def add_task():
     return render_template("add_task.html", categories=categories)
 
 
+
 @app.route("/edit_task/<task_id>", methods=["GET", "POST"])
 def edit_task(task_id):
     if request.method == "POST":
@@ -135,6 +148,8 @@ def edit_task(task_id):
     categories = mongo.db.categories.find().sort("category_name", 1)
     return render_template("edit_task.html", task=task, categories=categories)
 
+
+
 @app.route("/delete_task/<task_id>")
 def delete_task(task_id):
     mongo.db.tasks.remove({"_id": ObjectId(task_id)})
@@ -142,10 +157,12 @@ def delete_task(task_id):
     return redirect(url_for("get_tasks"))
 
 
+
 @app.route("/get_categories")
 def get_categories():
     categories = list(mongo.db.categories.find().sort("category_name", 1))
     return render_template("categories.html", categories=categories)
+
 
 
 @app.route("/add_category", methods={"GET", "POST"})
@@ -161,6 +178,7 @@ def add_category():
     return render_template("add_category.html")
 
 
+
 @app.route("/edit_category/<category_id>", methods=["GET", "POST"])
 def edit_category(category_id):
     if request.method == "POST":
@@ -172,6 +190,7 @@ def edit_category(category_id):
         return redirect(url_for("get_categories"))
     category = mongo.db.categories.find_one({"_id": ObjectId(category_id)})
     return render_template("edit_category.html", category=category)
+
 
 
 @app.route("/delete_category/<category_id>")
